@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.appbroker.core.FileChooser;
 import com.appbroker.core.FileChooserActivity;
 
 public class ActivityExample extends AppCompatActivity {
@@ -15,8 +16,11 @@ public class ActivityExample extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_example);
-        Intent intent=new Intent(this, FileChooserActivity.class);
-        startActivityForResult(intent,0);
+        FileChooser fileChooser=new FileChooser(this,0);
+        fileChooser.withTitle("Select an OVPN file.")
+                .withMimeType("application/x-openvpn-profile")
+                .defaultFileChooser(false)
+                .start();
     }
 
     @Override
@@ -24,8 +28,10 @@ public class ActivityExample extends AppCompatActivity {
         switch (requestCode){
             case 0:
                 if (data!=null){
-                    Log.d("REQUEST 0",data.getDataString());
-                    Toast.makeText(ActivityExample.this,data.getDataString(),Toast.LENGTH_LONG).show();
+                    if (data.getData()!=null){
+                        Log.d("REQUEST 0",data.getDataString());
+                        Toast.makeText(ActivityExample.this,data.getData().getPath(),Toast.LENGTH_LONG).show();
+                    }
                 }
                 break;
         }

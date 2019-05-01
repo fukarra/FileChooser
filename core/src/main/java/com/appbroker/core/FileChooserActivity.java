@@ -12,31 +12,53 @@ import android.support.v7.app.AppCompatActivity;
 public class FileChooserActivity extends AppCompatActivity {
     private final int FILE_SELECT_REQUEST_CODE=0;
     private final int STORAGE_PERMISSION_REQUEST_CODE=999;
-    private String _mimeType ="*/*";
+
+    public final static String TAG_MIME_TYPE ="mime_type";
+    public final static String TAG_CHOOSER_TITLE ="chooser_title";
+    public final static String TAG_USE_DEFAULT_FILE_EXPLORER ="use_default_file_explorer";
+
+    private String _mimeType;
+    private String _chooserTitle;
+    private boolean _useDefaultFileExplorer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        assignIntent();
+
         if (isStoragePermissionGranted()){
             run();
         }
     }
 
-    public FileChooserActivity addMimeType(String mimeType){
-        this._mimeType =mimeType;
-        return this;
+    private void assignIntent() {
+        final Intent intent=getIntent();
+        String s;
+        if ((s=intent.getStringExtra(TAG_MIME_TYPE))!=null){
+            this._mimeType=s;
+        }
+        if ((s=intent.getStringExtra(TAG_CHOOSER_TITLE))!=null){
+            this._chooserTitle=s;
+        }
+        this._useDefaultFileExplorer=intent.getBooleanExtra(TAG_USE_DEFAULT_FILE_EXPLORER,false);
+
     }
 
     public void run(){
-        Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType(this._mimeType);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        try {
-            startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_REQUEST_CODE);
-        }catch (android.content.ActivityNotFoundException e){
-            e.printStackTrace();
-            setResult(RESULT_CANCELED);
+        if (_useDefaultFileExplorer){
+            Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType(this._mimeType);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            try {
+                startActivityForResult(Intent.createChooser(intent, this._chooserTitle), FILE_SELECT_REQUEST_CODE);
+            }catch (android.content.ActivityNotFoundException e){
+                e.printStackTrace();
+                setResult(RESULT_CANCELED);
+            }
+        }else {
+            setContentView(R.layout.activity_file_chooser);
         }
+
     }
 
     @Override
