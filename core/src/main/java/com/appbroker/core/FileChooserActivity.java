@@ -31,7 +31,12 @@ public class FileChooserActivity extends AppCompatActivity {
         Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType(this._mimeType);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_REQUEST_CODE);
+        try {
+            startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_REQUEST_CODE);
+        }catch (android.content.ActivityNotFoundException e){
+            e.printStackTrace();
+            setResult(RESULT_CANCELED);
+        }
     }
 
     @Override
