@@ -19,7 +19,7 @@ public class ActivityExample extends AppCompatActivity {
         FileChooser fileChooser=new FileChooser(this,0);
         fileChooser.withTitle("Select an OVPN file.")
                 .withMimeType("application/x-openvpn-profile")
-                .defaultFileChooser(false)
+                .defaultFileChooser(true)
                 .start();
     }
 

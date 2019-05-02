@@ -24,15 +24,19 @@ public class FileChooserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        assignIntent();
+        if (getActionBar()!=null){
+            getActionBar().hide();
+        }else if(getSupportActionBar()!=null){
+            getSupportActionBar().hide();
+        }
+        assignIntent(getIntent());
 
         if (isStoragePermissionGranted()){
             run();
         }
     }
 
-    private void assignIntent() {
-        final Intent intent=getIntent();
+    private void assignIntent(final Intent intent) {
         String s;
         if ((s=intent.getStringExtra(TAG_MIME_TYPE))!=null){
             this._mimeType=s;
@@ -44,7 +48,7 @@ public class FileChooserActivity extends AppCompatActivity {
 
     }
 
-    public void run(){
+    private void run(){
         if (_useDefaultFileExplorer){
             Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType(this._mimeType);
@@ -73,7 +77,7 @@ public class FileChooserActivity extends AppCompatActivity {
                     }
 
                 }else {
-                    setResult(RESULT_CANCELED,data);
+                    setResult(RESULT_CANCELED);
                 }
                 finish();
                 break;
