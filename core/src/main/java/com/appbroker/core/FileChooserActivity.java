@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,11 +61,6 @@ public class FileChooserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getActionBar()!=null){
-            getActionBar().hide();
-        }else if(getSupportActionBar()!=null){
-            getSupportActionBar().hide();
-        }
         assignIntent(getIntent());
 
         if (isStoragePermissionGranted()){
@@ -115,19 +111,20 @@ public class FileChooserActivity extends AppCompatActivity {
             }
         }else {
             setContentView(R.layout.activity_file_chooser);
+
+            Toolbar toolbar=findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            if (getSupportActionBar()!=null){
+                getSupportActionBar().setHomeButtonEnabled(true);
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
+                getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+            }
+
             titleView=findViewById(R.id.activity_chooser_path_text);
             listView=findViewById(R.id.activity_chooser_list_view);
             progressBar=findViewById(R.id.activity_chooser_loading_progress);
             emptyLL=findViewById(R.id.activity_chooser_empty);
-            homeButton=findViewById(R.id.activity_chooser_home_button);
-            homeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setResult(RESULT_CANCELED);
-                    finish();
-                }
-            });
-
             rootPath = Environment.getExternalStorageDirectory().getPath();
             goToDir(rootPath);
         }

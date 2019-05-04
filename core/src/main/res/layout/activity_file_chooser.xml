@@ -4,27 +4,16 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/activity_chooser_home_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_back_gray_24dp"
-            android:layout_centerVertical="true"
-            style="?android:borderlessButtonStyle"
-            android:contentDescription="@string/back_button" />
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
         <TextView
-            android:id="@+id/activity_chooser_path_text"
-            android:gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:textSize="18sp"
-            android:layout_toRightOf="@id/activity_chooser_home_button"/>
-    </RelativeLayout>
+            android:id="@+id/activity_chooser_path_text" />
+    </android.support.v7.widget.Toolbar>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -63,7 +52,9 @@
         <ListView
             android:id="@+id/activity_chooser_list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1dp"/>
     </RelativeLayout>
 
 </LinearLayout>
